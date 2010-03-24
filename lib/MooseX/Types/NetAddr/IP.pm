@@ -18,7 +18,9 @@ class_type 'NetAddr::IP';
 
 subtype NetAddrIP, as 'NetAddr::IP';
 
-coerce NetAddrIP, from Str, via { 'NetAddr::IP'->new( $_ ) };
+coerce NetAddrIP, 
+    from Str, 
+    via { 'NetAddr::IP'->new( $_ ) or die "Cannot convert '$_' into a NetAddr::IP object.\n" };
 
 1;
 __END__
