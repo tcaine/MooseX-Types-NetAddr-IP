@@ -8,7 +8,7 @@ our $VERSION = '0.01';
 use NetAddr::IP ();
 use Data::Dumper;
 
-use MooseX::Types::Moose qw/Str/;
+use MooseX::Types::Moose qw/Str ArrayRef/;
 
 use namespace::clean;
 
@@ -22,7 +22,14 @@ coerce NetAddrIP,
     from Str, 
     via { 
         'NetAddr::IP'->new( $_ ) 
-            or die "Cannot convert '$_' into a NetAddr::IP object.\n";
+            or die "Cannot coerce '$_' into a NetAddr::IP object.\n";
+    };
+
+coerce NetAddrIP, 
+    from ArrayRef[Str], 
+    via { 
+        'NetAddr::IP'->new( @$_ ) 
+            or die "Cannot coerce '@$_' into a NetAddr::IP object.\n";
     };
 
 1;
