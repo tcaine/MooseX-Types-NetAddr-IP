@@ -6,10 +6,7 @@ use warnings;
 our $VERSION = '0.01';
 
 use NetAddr::IP ();
-use Data::Dumper;
-
 use MooseX::Types::Moose qw/Str ArrayRef/;
-
 use namespace::clean;
 
 use MooseX::Types -declare => [qw( NetAddrIP NetAddrIPv4 NetAddrIPv6 )];
@@ -64,16 +61,23 @@ coerce NetAddrIPv6,
 
 1;
 __END__
-# Below is stub documentation for your module. You'd better edit it!
 
 =head1 NAME
 
-MooseX::Types::NetAddr::IP - Perl extension for blah blah blah
+MooseX::Types::NetAddr::IP - NetAddr::IP related constraints and coercions for Moose
 
 =head1 SYNOPSIS
 
-  use MooseX::Types::NetAddr::IP;
-  blah blah blah
+  package MyPackage;
+
+  use Moose;
+  use MooseX::Types::NetAddr::IP qw( NetAddrIP );
+
+  has 'address' => ( is => 'ro', isa => NetAddrIP, coerce => 1 );
+
+  __PACKAGE__->meta->make_immutable;
+  no Moose;
+  1;
 
 =head1 DESCRIPTION
 
@@ -81,13 +85,9 @@ Stub documentation for MooseX::Types::NetAddr::IP, created by h2xs. It looks lik
 author of the extension was negligent enough to leave the stub
 unedited.
 
-Blah blah blah.
-
 =head2 EXPORT
 
 None by default.
-
-
 
 =head1 SEE ALSO
 
@@ -102,11 +102,11 @@ If you have a web site set up for your module, mention it here.
 
 =head1 AUTHOR
 
-root, E<lt>root@frontiernet.netE<gt>
+Todd Caine, E<lt>todd.caine@gmail.comE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2010 by root
+Copyright (C) 2010 by Todd Caine
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.10.1 or,
