@@ -1,12 +1,17 @@
-use 5.010001;
+
+use strict;
+use warnings;
 use ExtUtils::MakeMaker;
-# See lib/ExtUtils/MakeMaker.pm for details of how to influence
-# the contents of the Makefile that is written.
+
 WriteMakefile(
     NAME              => 'MooseX::Types::NetAddr::IP',
     VERSION_FROM      => 'lib/MooseX/Types/NetAddr/IP.pm', # finds $VERSION
-    PREREQ_PM         => {}, # e.g., Module::Name => 1.1
+    PREREQ_PM         => {
+        'MooseX::Types'         => 0,
+        'MooseX::Types::Moose'  => 0,
+        'namespace::clean'      => 0,
+        'NetAddr::IP'           => 0,
+    },
     ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
-      (ABSTRACT_FROM  => 'lib/MooseX/Types/NetAddr/IP.pm', # retrieve abstract from module
-       AUTHOR         => 'root <root@frontiernet.net>') : ()),
+      (AUTHOR         => 'Todd Caine <todd.caine@gmail.com>') : ()),
 );
