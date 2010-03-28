@@ -73,11 +73,29 @@ MooseX::Types::NetAddr::IP - NetAddr::IP related constraints and coercions for M
   use Moose;
   use MooseX::Types::NetAddr::IP qw( NetAddrIP );
 
-  has 'address' => ( is => 'ro', isa => NetAddrIP, coerce => 1 );
+  has 'address' => ( 
+      is      => 'ro', 
+      isa     => NetAddrIP, 
+      coerce  => 1, 
+      handles => [qw/
+          range 
+          network 
+          broadcast 
+      /],
+  );
 
   __PACKAGE__->meta->make_immutable;
   no Moose;
   1;
+
+  use MyPackage;
+
+  my $o = MyPackage->new( address => '192.168.1.100/24' );
+
+  # these methods are forwarded to the underlying NetAddr::IP object
+  print $o->range();
+  print $o->network();
+  print $o->broadcast();
 
 =head1 DESCRIPTION
 
@@ -91,14 +109,7 @@ None by default.
 
 =head1 SEE ALSO
 
-Mention other useful documentation such as the documentation of
-related modules or operating system documentation (such as man pages
-in UNIX), or any relevant external documentation such as RFCs or
-standards.
-
-If you have a mailing list set up for your module, mention it here.
-
-If you have a web site set up for your module, mention it here.
+NetAddr::IP
 
 =head1 AUTHOR
 

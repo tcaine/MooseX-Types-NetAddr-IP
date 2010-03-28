@@ -49,7 +49,7 @@ isa_ok find_type_constraint('NetAddr::IP')
     package NetAddrIPv6Test;
     use Moose;
     use MooseX::Types::NetAddr::IP qw( NetAddrIPv6 );
-    has 'address' => ( is => 'ro', isa => NetAddrIPv6, coerce => 1 );
+    has 'address' => ( is => 'ro', isa => NetAddrIPv6, coerce => 1, handles => [qw/ range /] );
 }{
     foreach my $ipv6Addr (qw/ 
         0:0:0:0:0:0:0:0 
@@ -64,5 +64,6 @@ isa_ok find_type_constraint('NetAddr::IP')
 
     eval { my $obj = NetAddrIPv6Test->new({address => '192.168.1.1'}); };
     ok $@, 'invalid IP address';
+
 }
 
