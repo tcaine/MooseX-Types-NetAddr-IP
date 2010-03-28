@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 16;
+use Test::More tests => 20;
 use Moose::Util::TypeConstraints;
 
 use_ok 'MooseX::Types::NetAddr::IP';
@@ -30,10 +30,20 @@ isa_ok find_type_constraint('NetAddr::IP')
     package NetAddrIPv4Test;
     use Moose;
     use MooseX::Types::NetAddr::IP qw( NetAddrIPv4 );
-    has 'address' => ( is => 'ro', isa => NetAddrIPv4, coerce => 1 );
+
+    has 'address' => ( 
+        is      => 'ro', 
+        isa     => NetAddrIPv4, 
+        coerce  => 1, 
+        handles => [qw/ network broadcast /],
+    );
 }{
-    my $ip = NetAddrIPv4Test->new({address => '127.0.0.1/32'})->address;
+    my $ip = NetAddrIPv4Test->new({address => '127.0.0.1/24'})->address;
     isa_ok $ip, "NetAddr::IP", "coerced from string";
+    is $ip->network->addr, '127.0.0.0';
+    is $ip->network, '127.0.0.0/24';
+    is $ip->broadcast->addr, '127.0.0.255';
+    is $ip->broadcast, '127.0.0.255/24';
 
     foreach my $invalidIPv4Addr (qw(
         1080:0:0:0:8:800:200C:417A 
@@ -49,7 +59,7 @@ isa_ok find_type_constraint('NetAddr::IP')
     package NetAddrIPv6Test;
     use Moose;
     use MooseX::Types::NetAddr::IP qw( NetAddrIPv6 );
-    has 'address' => ( is => 'ro', isa => NetAddrIPv6, coerce => 1, handles => [qw/ range /] );
+    has 'address' => ( is => 'ro', isa => NetAddrIPv6, coerce => 1 );
 }{
     foreach my $ipv6Addr (qw/ 
         0:0:0:0:0:0:0:0 
@@ -64,6 +74,5 @@ isa_ok find_type_constraint('NetAddr::IP')
 
     eval { my $obj = NetAddrIPv6Test->new({address => '192.168.1.1'}); };
     ok $@, 'invalid IP address';
-
 }
 
