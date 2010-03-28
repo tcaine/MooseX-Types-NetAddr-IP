@@ -1,40 +1,36 @@
-MooseX-Types-NetAddr-IP version 0.01
-====================================
+NAME
+    MooseX::Types::NetAddr::IP - NetAddr::IP related types and coercions for
+    Moose
 
-The README is used to introduce the module and provide instructions on
-how to install the module, any machine dependencies it may have (for
-example C compilers and installed libraries) and any other information
-that should be provided before the module is installed.
+SYNOPSIS
+      use MooseX::Types::NetAddr::IP qw( NetAddrIP NetAddrIPv4 NetAddrIPv6 );
 
-A README file is required for CPAN modules since CPAN extracts the
-README file from a module distribution so that people browsing the
-archive can use it get an idea of the modules uses. It is usually a
-good idea to provide version information here so that people can
-decide whether fixes for the module are worth downloading.
+DESCRIPTION
+    This package provides internet address types for Moose.
 
-INSTALLATION
+  TYPES
+    NetAddrIP
 
-To install this module type the following:
+        Coerces from Str and ArrayRef[Str,Str] via "new" in NetAddr::IP.
 
-   perl Makefile.PL
-   make
-   make test
-   make install
+    NetAddrIPv4
 
-DEPENDENCIES
+        Coerces from Str via "new" in NetAddr::IP.
 
-This module requires these other modules and libraries:
+    NetAddrIPv6
 
-  blah blah blah
+        Coerces from Str via "new" in NetAddr::IP.
 
-COPYRIGHT AND LICENCE
+SEE ALSO
+    NetAddr::IP
 
-Put the correct copyright and licence information here.
+AUTHOR
+    Todd Caine, <todd.caine@gmail.com>
 
-Copyright (C) 2010 by root
+COPYRIGHT AND LICENSE
+    Copyright (C) 2010 by Todd Caine
 
-This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself, either Perl version 5.10.1 or,
-at your option, any later version of Perl 5 you may have available.
-
+    This library is free software; you can redistribute it and/or modify it
+    under the same terms as Perl itself, either Perl version 5.10.1 or, at
+    your option, any later version of Perl 5 you may have available.
 
