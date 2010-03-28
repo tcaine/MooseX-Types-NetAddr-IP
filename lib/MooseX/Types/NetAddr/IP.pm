@@ -32,8 +32,8 @@ coerce NetAddrIP,
     };
 
 my $ipv4prefix = '(?:[1-2]?[0-9]|3[0-2])';
-my $ipv4unit = '(?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})';
-my $ipv4     = "$ipv4unit\.$ipv4unit\.$ipv4unit\.$ipv4unit";
+my $ipv4unit   = '(?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})';
+my $ipv4       = "(?:$ipv4unit\.){3}$ipv4unit";
 
 coerce NetAddrIPv4,
     from Str,
@@ -46,8 +46,8 @@ coerce NetAddrIPv4,
     };
 
 my $ipv6prefix = '(?:[1-9]?[0-9]|1[0-2][0-9]|12[0-8])';
-my $ipv6unit = '[0-9a-fA-F]{0,4}';
-my $ipv6     = "(?:(?:$ipv6unit:){2,7}$ipv6unit)|::[fF]{4}:$ipv4";
+my $ipv6unit   = '[0-9a-fA-F]{0,4}';
+my $ipv6       = "(?:(?:$ipv6unit:){2,7}$ipv6unit)|::[fF]{4}:$ipv4";
 
 coerce NetAddrIPv6,
     from Str,
