@@ -64,52 +64,33 @@ __END__
 
 =head1 NAME
 
-MooseX::Types::NetAddr::IP - NetAddr::IP related constraints and coercions for Moose
+MooseX::Types::NetAddr::IP - NetAddr::IP related types and coercions for Moose
 
 =head1 SYNOPSIS
 
-  package MyPackage;
-
-  use Moose;
-  use MooseX::Types::NetAddr::IP qw( NetAddrIP );
-
-  has 'address' => ( 
-      is      => 'ro', 
-      isa     => NetAddrIP, 
-      coerce  => 1, 
-      handles => [qw/
-          range 
-          network 
-          broadcast 
-      /],
-  );
-
-  __PACKAGE__->meta->make_immutable;
-  no Moose;
-  1;
-
-  use MyPackage;
-
-  my $o = MyPackage->new( address => '192.168.1.100/24' );
-
-  # these methods are forwarded to the underlying NetAddr::IP object
-  print $o->range();
-  print $o->network();
-  print $o->broadcast();
+  use MooseX::Types::NetAddr::IP qw( NetAddrIP NetAddrIPv4 NetAddrIPv6 );
 
 =head1 DESCRIPTION
 
-Stub documentation for MooseX::Types::NetAddr::IP, created by h2xs. It looks like the
-author of the extension was negligent enough to leave the stub
-unedited.
+This package provides internet address types for Moose.
 
-=head2 EXPORT
+=head2 TYPES
 
-None by default.
+NetAddrIP
+
+    Coerces from Str and ArrayRef[Str,Str] via "new" in NetAddr::IP. 
+
+NetAddrIPv4
+
+    Coerces from Str via "new" in NetAddr::IP.
+
+NetAddrIPv6
+
+    Coerces from Str via "new" in NetAddr::IP.
 
 =head1 SEE ALSO
 
-NetAddr::IP
+L<NetAddr::IP>
 
 =head1 AUTHOR
 
@@ -122,6 +103,5 @@ Copyright (C) 2010 by Todd Caine
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.10.1 or,
 at your option, any later version of Perl 5 you may have available.
-
 
 =cut
