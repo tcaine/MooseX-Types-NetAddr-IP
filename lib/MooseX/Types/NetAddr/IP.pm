@@ -89,7 +89,7 @@ NetAddrIPv6
 
 =head1 SEE ALSO
 
-L<NetAddr::IP>
+L<NetAddr::IP>, L<MooseX::Types>
 
 =head1 AUTHOR
 
