@@ -3,7 +3,7 @@ package MooseX::Types::NetAddr::IP;
 use strict;
 use warnings;
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 use NetAddr::IP ();
 use MooseX::Types::Moose qw/Str ArrayRef/;
@@ -77,15 +77,15 @@ This package provides internet address types for Moose.
 
 NetAddrIP
 
-    Coerces from Str and ArrayRef[Str,Str] via "new" in NetAddr::IP. 
+    Coerces from Str and ArrayRef via "new" in NetAddr::IP. 
 
 NetAddrIPv4
 
-    Coerces from Str and ArrayhRef[Str,Str] via "new" in NetAddr::IP.
+    Coerces from Str and ArrayRef via "new" in NetAddr::IP.
 
 NetAddrIPv6
 
-    Coerces from Str and ArrayRef[Str,Str] via "new" in NetAddr::IP.
+    Coerces from Str and ArrayRef via "new" in NetAddr::IP.
 
 =head1 SEE ALSO
 
