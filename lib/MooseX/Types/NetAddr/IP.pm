@@ -3,7 +3,7 @@ package MooseX::Types::NetAddr::IP;
 use strict;
 use warnings;
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 use NetAddr::IP ();
 use MooseX::Types::Moose qw/Str ArrayRef/;
@@ -30,41 +30,33 @@ coerce NetAddrIP,
             or die "'@$_' is not an IP address.\n";
     };
 
-sub createIPv4Addr (@) {
+sub createAddress ($@) {
+    my $version = shift;
+
     my $ipaddr = NetAddr::IP->new( @_ )
-        or die "'@_' is not an IPv4 address.\n";
+        or die "'@_' is not an IPv$version address.\n";
 
-    die "'@_' is not an IPv4 address."
-        unless $ipaddr->version == 4;
-
-    return $ipaddr;
-}
-
-sub createIPv6Addr (@) {
-    my $ipaddr = NetAddr::IP->new( @_ )
-        or die "'@_' is not an IPv6 address.\n";
-
-    die "'@_' is not an IPv6 address."
-        unless $ipaddr->version == 6;
+    die "'@_' is not an IPv$version address."
+        unless $ipaddr->version == $version;
 
     return $ipaddr;
 }
 
 coerce NetAddrIPv4,
     from Str,
-    via { createIPv4Addr $_ };
+    via { createAddress 4 => $_ };
 
 coerce NetAddrIPv4,
     from ArrayRef[Str],
-    via { createIPv4Addr @$_ };
+    via { createAddress 4 => @$_ };
 
 coerce NetAddrIPv6,
     from Str,
-    via { createIPv6Addr $_ };
+    via { createAddress 6 => $_ };
 
 coerce NetAddrIPv6,
     from ArrayRef[Str],
-    via { createIPv6Addr @$_ };
+    via { createAddress 6 => @$_ };
 
 1;
 __END__
