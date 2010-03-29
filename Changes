@@ -1,6 +1,12 @@
 Revision history for Perl extension MooseX::Types::NetAddr::IP.
 
-0.01  Wed Mar 24 05:20:47 2010
-	- original version; created by h2xs 1.23 with options
-		-AX -n MooseX::Types::NetAddr::IP
+0.04
+    - fixed some typos in the pod
+    - added tests for NetAddrIPv4/6 ArrayRef coercions
+0.03
+    - refactoring
+0.02  
+    - removed regexp validation
+0.01 
+    - original version; created by h2xs 1.23 
 
