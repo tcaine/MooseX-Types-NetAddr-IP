@@ -6,6 +6,7 @@ use ExtUtils::MakeMaker;
 
 WriteMakefile(
     NAME          => 'MooseX::Types::NetAddr::IP',
+    AUTHOR        => 'Todd Caine <todd.caine@gmail.com>',
     LICENSE       => 'perl',
     VERSION_FROM  => 'lib/MooseX/Types/NetAddr/IP.pm',
     ABSTRACT_FROM => 'lib/MooseX/Types/NetAddr/IP.pm',
