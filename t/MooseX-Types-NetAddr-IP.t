@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 20;
+use Test::More tests => 22;
 use Test::Exception;
 use Moose::Util::TypeConstraints;
 
@@ -47,6 +47,9 @@ isa_ok find_type_constraint('NetAddr::IP')
     is $ip->broadcast->addr, '127.0.0.255';
     is $ip->broadcast, '127.0.0.255/24';
 
+    $ip = NetAddrIPv4Test->new({address => ['10.0.0.255', '255.0.0.0']})->address;
+    isa_ok $ip, "NetAddr::IP", "coerced from string";
+
     foreach my $invalidIPv4Addr (qw(
         1080:0:0:0:8:800:200C:417A 
         43.0.0.1/320
@@ -74,6 +77,14 @@ isa_ok find_type_constraint('NetAddr::IP')
         my $ip = NetAddrIPv6Test->new({address => $ipv6Addr})->address;
         isa_ok $ip, "NetAddr::IP", "coerced from string";
     }
+
+    my $ip = NetAddrIPv6Test->new({
+                 address => [
+                     '1080:0:0:0:8:800:200C:417A', 
+                     'FFFF:FFFF:FFFF:FFFF:0000:0000:0000:0000'
+                 ],
+             })->address;
+    isa_ok $ip, "NetAddr::IP", "coerced from string";
 
     throws_ok { 
         NetAddrIPv6Test->new({address => '192.168.1.1'}) } 
