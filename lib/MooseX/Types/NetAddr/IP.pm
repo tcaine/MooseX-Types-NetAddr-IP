@@ -8,7 +8,6 @@ our $VERSION = '0.01';
 use NetAddr::IP ();
 use MooseX::Types::Moose qw/Str ArrayRef/;
 use namespace::clean;
-
 use MooseX::Types -declare => [qw( NetAddrIP NetAddrIPv4 NetAddrIPv6 )];
 
 class_type 'NetAddr::IP';
@@ -20,43 +19,63 @@ subtype NetAddrIPv6, as 'NetAddr::IP';
 coerce NetAddrIP, 
     from Str, 
     via { 
-        'NetAddr::IP'->new( $_ ) 
-            or die "Cannot coerce '$_' into a NetAddr::IP object.\n";
+        return NetAddr::IP->new( $_ ) 
+            or die "'$_' is not an IP address.\n";
     };
 
 coerce NetAddrIP, 
     from ArrayRef[Str], 
     via { 
-        'NetAddr::IP'->new( @$_ ) 
-            or die "Cannot coerce '@$_' into a NetAddr::IP object.\n";
+        return NetAddr::IP->new( @$_ ) 
+            or die "'@$_' is not an IP address.\n";
     };
-
-my $ipv4prefix = '(?:[1-2]?[0-9]|3[0-2])';
-my $ipv4unit   = '(?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})';
-my $ipv4       = "(?:$ipv4unit\.){3}$ipv4unit";
 
 coerce NetAddrIPv4,
     from Str,
     via {
-        die "'$_' is not a valid IPv4 address." 
-            unless m/^$ipv4(?:\/$ipv4prefix)?$/;
+        my $this = NetAddr::IP->new( $_ )
+            or die "'$_' is not an IPv4 address.\n";
 
-        'NetAddr::IP'->new( $_ )
-            or die "Cannot coerce '$_' into a NetAddr::IP object.\n";
+        die "'$_' is not an IPv4 address."
+            unless $this->version == 4;
+
+        return $this;
     };
 
-my $ipv6prefix = '(?:[1-9]?[0-9]|1[0-2][0-9]|12[0-8])';
-my $ipv6unit   = '[0-9a-fA-F]{0,4}';
-my $ipv6       = "(?:(?:$ipv6unit:){2,7}$ipv6unit)|::[fF]{4}:$ipv4";
+coerce NetAddrIPv4,
+    from ArrayRef[Str],
+    via {
+        my $this = NetAddr::IP->new( @$_ )
+            or die "'@$_' is not an IPv4 address.\n";
+
+        die "'@$_' is not an IPv4 address."
+            unless $this->version == 4;
+
+        return $this;
+    };
 
 coerce NetAddrIPv6,
     from Str,
     via { 
-        die "'$_' is not a valid IPv6 address."
-            unless m/^$ipv6(?:\/$ipv6prefix)?$/;
+        my $this = NetAddr::IP->new( $_ )
+            or die "'$_' is not an IPv6 address.\n";
 
-        'NetAddr::IP'->new( $_ )
-            or die "Cannot coerce '$_' into a NetAddr::IP object.\n";
+        die "'$_' is not an IPv6 address.\n"
+            unless $this->version == 6;
+
+        return $this
+    };
+
+coerce NetAddrIPv6,
+    from ArrayRef[Str],
+    via { 
+        my $this = NetAddr::IP->new( @$_ )
+            or die "'@$_' is not an IPv6 address.\n";
+
+        die "'@$_' is not an IPv6 address.\n"
+            unless $this->version == 6;
+
+        return $this
     };
 
 1;

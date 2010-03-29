@@ -3,6 +3,7 @@ use strict;
 use warnings;
 
 use Test::More tests => 20;
+use Test::Exception;
 use Moose::Util::TypeConstraints;
 
 use_ok 'MooseX::Types::NetAddr::IP';
@@ -22,8 +23,9 @@ isa_ok find_type_constraint('NetAddr::IP')
     $ip = NetAddrIPTest->new({address => ['10.0.0.255', '255.0.0.0']})->address;
     isa_ok $ip, "NetAddr::IP", "coerced from string";
 
-    eval { my $obj = NetAddrIPTest->new({address => '343.0.0.1/320'}); };
-    ok $@, 'invalid IP address';
+    dies_ok { 
+        NetAddrIPTest->new({address => '343.0.0.1/320'}) 
+    } "invalid IP address";
 }
 
 {
@@ -50,8 +52,9 @@ isa_ok find_type_constraint('NetAddr::IP')
         43.0.0.1/320
         10.0.0.256
     )) {
-        eval { my $obj = NetAddrIPv4Test->new({address => $invalidIPv4Addr}); };
-        ok $@, 'invalid IP address';
+        throws_ok { 
+            NetAddrIPv4Test->new({address => $invalidIPv4Addr}); 
+        } qr/'$invalidIPv4Addr' is not an IPv4 address/, "invalid IPv4 address";
     }
 }
 
@@ -62,17 +65,19 @@ isa_ok find_type_constraint('NetAddr::IP')
     has 'address' => ( is => 'ro', isa => NetAddrIPv6, coerce => 1 );
 }{
     foreach my $ipv6Addr (qw/ 
-        0:0:0:0:0:0:0:0 
+        ::
+        ::1
+        0:0:0:0:0:0:0:0
         1080:0:0:0:8:800:200C:417A 
         1080::8:800:200C:417A 
-        :: 
-        ::1 
         ::FFFF:192.168.1.1 /) {
         my $ip = NetAddrIPv6Test->new({address => $ipv6Addr})->address;
         isa_ok $ip, "NetAddr::IP", "coerced from string";
     }
 
-    eval { my $obj = NetAddrIPv6Test->new({address => '192.168.1.1'}); };
-    ok $@, 'invalid IP address';
+    throws_ok { 
+        NetAddrIPv6Test->new({address => '192.168.1.1'}) } 
+            qr/'192.168.1.1' is not an IPv6 address/,
+                'invalid IP address';
 }
 
