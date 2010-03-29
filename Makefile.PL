@@ -15,6 +15,7 @@ WriteMakefile(
         'MooseX::Types'         => '0.19',
         'namespace::clean'      => '0.08',
         'NetAddr::IP'           => 0,
+        'Test::Exception'       => 0,
     },
 );
 
