@@ -1,5 +1,8 @@
 Revision history for Perl extension MooseX::Types::NetAddr::IP.
 
+0.05
+    - prevent loading NetAddr::IP in consumed module until used (Caleb Cushing)
+
 0.04
     - fixed some typos in the pod
     - added tests for NetAddrIPv4/6 ArrayRef coercions
