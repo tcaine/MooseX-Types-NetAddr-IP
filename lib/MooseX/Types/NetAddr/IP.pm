@@ -5,7 +5,7 @@ use warnings;
 
 our $VERSION = '0.06';
 
-use Class::Load 0.20 qw( load_class );
+use Module::Runtime      qw/use_module/;
 use MooseX::Types::Moose qw/Str ArrayRef/;
 use namespace::clean;
 use MooseX::Types -declare => [qw( NetAddrIP NetAddrIPv4 NetAddrIPv6 )];
@@ -19,21 +19,21 @@ subtype NetAddrIPv6, as 'NetAddr::IP';  # can be only IPv6
 coerce NetAddrIP, 
     from Str, 
     via { 
-        return load_class('NetAddr::IP')->new( $_ )
+        return use_module('NetAddr::IP')->new( $_ )
             || die "'$_' is not an IP address.\n";
     };
 
 coerce NetAddrIP, 
     from ArrayRef[Str], 
     via { 
-        return load_class('NetAddr::IP')->new( @$_ )
+        return use_module('NetAddr::IP')->new( @$_ )
             || die "'@$_' is not an IP address.\n";
     };
 
 sub createAddress ($@) {
     my $version = shift;
 
-    my $ipaddr = load_class('NetAddr::IP')->new( @_ )
+    my $ipaddr = use_module('NetAddr::IP')->new( @_ )
         || die "'@_' is not an IPv$version address.\n";
 
     die "'@_' is not an IPv$version address."
