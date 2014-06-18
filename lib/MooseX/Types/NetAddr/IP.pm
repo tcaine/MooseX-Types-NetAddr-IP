@@ -20,21 +20,21 @@ coerce NetAddrIP,
     from Str, 
     via { 
         return load_class('NetAddr::IP')->new( $_ )
-            or die "'$_' is not an IP address.\n";
+            || die "'$_' is not an IP address.\n";
     };
 
 coerce NetAddrIP, 
     from ArrayRef[Str], 
     via { 
         return load_class('NetAddr::IP')->new( @$_ )
-            or die "'@$_' is not an IP address.\n";
+            || die "'@$_' is not an IP address.\n";
     };
 
 sub createAddress ($@) {
     my $version = shift;
 
     my $ipaddr = load_class('NetAddr::IP')->new( @_ )
-        or die "'@_' is not an IPv$version address.\n";
+        || die "'@_' is not an IPv$version address.\n";
 
     die "'@_' is not an IPv$version address."
         unless $ipaddr->version == $version;
