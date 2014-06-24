@@ -17,7 +17,7 @@ WriteMakefile(
         'namespace::clean'      => '0.08',
         'NetAddr::IP'           => 0,
         'Test::Exception'       => 0,
-        'Module::Runtime'       => 0,
+        'Module::Runtime'       => '0.014',
     },
 );
 

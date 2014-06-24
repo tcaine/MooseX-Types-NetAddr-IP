@@ -3,7 +3,7 @@ package MooseX::Types::NetAddr::IP;
 use strict;
 use warnings;
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 use Module::Runtime      qw/use_module/;
 use MooseX::Types::Moose qw/Str ArrayRef/;
